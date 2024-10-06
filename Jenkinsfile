@@ -19,10 +19,11 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/walmart-dev-mss']], extensions: [], userRemoteConfigs: [[credentialsId: 'democalculus-github-login-creds', url: 'https://github.com/democalculus/maven-web-application.git']]])
             }
         }
+
     stage ('Build') {
       steps {
       sh '${mvnHome}/bin/mvn  clean install'
-
+       }
     }
 
     stage ('DEV Deploy') {
@@ -31,6 +32,7 @@ pipeline {
       deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-10-username-passord', path: '', url: 'http://18.118.206.5:8085')], contextPath: 'mss-walmart-dev', war: '**/*.war'
       }
     }
+
     stage('QA approve') {
         steps {
           notifySlack("Do you approve QA deployment? $jenkins_server_url/job/$JOB_NAME", notification_channel, [])
@@ -47,13 +49,13 @@ pipeline {
 
     }
 }
-//
-// def notifySlack(text, channel, attachments) {
-//
-//     def payload = JsonOutput.toJson([text: text,
-//         channel: channel,
-//         attachments: attach
-//     ])
-//
-//     sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slack_url}"
-// }
+
+def notifySlack(text, channel, attachments) {
+
+    def payload = JsonOutput.toJson([text: text,
+        channel: channel,
+        attachments: attach
+    ])
+
+    sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slack_url}"
+}
