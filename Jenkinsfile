@@ -2,13 +2,17 @@ mport groovy.json.JsonOutput
 
 pipeline {
     agent any
+
     tools {
-        mvnHome  'UI_Maven3..9.9'
+        maven 'UI_Maven3..9.9'
     }
+    // tools {
+    //     mvnHome  'UI_Maven3..9.9'
+    // }
     environment {
         jenkins_server_url = "http://18.118.206.5:8080"
         notification_channel = 'mss-java-web-app'
-        slack_url = slack_url = 'https://hooks.slack.com/services/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'
+        slack_url = 'https://hooks.slack.com/services/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'
 
     }
 
@@ -22,7 +26,7 @@ pipeline {
 
     stage ('Build') {
       steps {
-      sh '${mvnHome}/bin/mvn  clean install'
+      sh 'mvn  clean install'
        }
     }
 
