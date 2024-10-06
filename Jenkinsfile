@@ -3,7 +3,7 @@ mport groovy.json.JsonOutput
 pipeline {
     agent any
     tools {
-        maven 'Maven3'
+        mvnHome  'UI_Maven3..9.9'
     }
     environment {
         jenkins_server_url = "http://18.118.206.5:8080"
@@ -47,13 +47,13 @@ pipeline {
 
     }
 }
-
-def notifySlack(text, channel, attachments) {
-
-    def payload = JsonOutput.toJson([text: text,
-        channel: channel,
-        attachments: attach
-    ])
-
-    sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slack_url}"
-}
+//
+// def notifySlack(text, channel, attachments) {
+//
+//     def payload = JsonOutput.toJson([text: text,
+//         channel: channel,
+//         attachments: attach
+//     ])
+//
+//     sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slack_url}"
+// }
