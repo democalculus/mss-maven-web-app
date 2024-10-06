@@ -4,7 +4,7 @@ node {
     environment {
         // jenkins_server_url = "http://ec2-3-129-59-179.us-east-2.compute.amazonaws.com:8090"
         notification_channel = 'jave-devopment'
-        slack_url = '${slack_notification_url}'
+        slack_url = 'https://hooks.slack.com/services/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'
 
        }
     stage ("checkout")  {
@@ -50,9 +50,9 @@ node {
     }
 }
 
-  stage ('Slack notification')  {
-    slackSend(channel:'channel-name', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-   }
+  // stage ('Slack notification')  {
+  //   slackSend(channel:'channel-name', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+  //  }
 
 //    stage ('DEV Approve')  {
 //             echo "Taking approval from DEV Manager for QA Deployment"
