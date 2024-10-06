@@ -3,7 +3,7 @@ node {
     def mvnHome = tool name: "UI_Maven3..9.9"
     environment {
         // jenkins_server_url = "http://ec2-3-129-59-179.us-east-2.compute.amazonaws.com:8090"
-        notification_channel = 'jave-devopment'
+        notification_channel = 'mss-java-web-app'
         slack_url = 'https://hooks.slack.com/services/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'
 
        }
