@@ -38,12 +38,13 @@ pipeline {
             }
         }
 
-        stage ('QA Deploy') {
-          steps {
-          echo "deploying to DEV Env "
-          deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-10-username-passord', path: '', url: 'http://18.118.206.5:8085')], contextPath: 'mss-walmart-dev', war: '**/*.war'
-          }
-        }
+    stage ('QA Deploy') {
+      steps {
+      echo "deploying to QA Env "
+      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-10-username-passord', path: '', url: 'http://18.118.206.5:8085')], contextPath: 'mss-walmart-dev', war: '**/*.war'
+      }
+    }
+
     }
 }
 
