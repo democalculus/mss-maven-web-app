@@ -35,13 +35,15 @@ node {
    //      ]
    //   )
    //  }
+
+   stage ('DEV Deploy')  {
+      echo "deploying to DEV Env "
+      //deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
+      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-10-username-passord', path: '', url: 'http://18.118.206.5:8085')], contextPath: 'mss-walmart-dev', war: '**/*.war'
+
+    }
 }
-//    stage ('DEV Deploy')  {
-//       echo "deploying to DEV Env "
-//       deploy adapters: [tomcat9(credentialsId: '4c55fae1-a02d-4b82-ba34-d262176eeb46', path: '', url: 'http://your_tomcat_url:8080')], contextPath: null, war: '**/*.war'
-//
-//     }
-//
+
 //   stage ('Slack notification')  {
 //     slackSend(channel:'channel-name', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
 //    }
