@@ -71,3 +71,31 @@ Dec 19, 2022 5:10:43,974 PMFreestyle_projects » Maven_Folder » wallmart-qa-mss
 
 #####SonarQube
 #squ_1bd82d92f55afca8d9fff16fdb00ec42f786bd39
+
+
+
+
+xapp-1-A07Q6HV4ZAT-7839656759076-b74d90b51339df47407d5ad27839fd6cc526141ff0ebfe9b382e84fe2ab374e5
+  display_information:
+  name: Demo App
+settings:
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  is_hosted: false
+  token_rotation_enabled: false
+
+
+  ##########
+  xapp-1-A07Q6HV4ZAT-7839656759076-b74d90b51339df47407d5ad27839fd6cc526141ff0ebfe9b382e84fe2ab374e5
+
+
+
+
+
+
+  A07QJ97FKTP
+
+
+  7859931033712.7834313529941 clinediD
+
+  03c804cc13c1ee4cae777a6d3eb89362 SECRET 

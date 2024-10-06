@@ -1,6 +1,12 @@
 node {
 
     def mvnHome = tool name: "UI_Maven3..9.9"
+    environment {
+        // jenkins_server_url = "http://ec2-3-129-59-179.us-east-2.compute.amazonaws.com:8090"
+        notification_channel = 'jave-devopment'
+        slack_url = 'https://hooks.slack.com/services/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'
+
+       }
     stage ("checkout")  {
        checkout([$class: 'GitSCM', branches: [[name: '*/walmart-dev-mss']], extensions: [], userRemoteConfigs: [[credentialsId: 'democalculus-github-login-creds', url: 'https://github.com/democalculus/maven-web-application.git']]])
     }
@@ -44,10 +50,10 @@ node {
     }
 }
 
-//   stage ('Slack notification')  {
-//     slackSend(channel:'channel-name', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-//    }
-//
+  stage ('Slack notification')  {
+    slackSend(channel:'channel-name', message: "Job is successful, here is the info -  Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+   }
+
 //    stage ('DEV Approve')  {
 //             echo "Taking approval from DEV Manager for QA Deployment"
 //             timeout(time: 7, unit: 'DAYS') {
@@ -79,3 +85,12 @@ node {
 //
  // }
 // }
+def notifySlack(text, channel, attachments) {
+
+    def payload = JsonOutput.toJson([text: text,
+        channel: channel,
+        attachments: attachments
+    ])
+
+    sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slack_url}"
+}
