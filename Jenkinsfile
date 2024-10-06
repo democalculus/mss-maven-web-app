@@ -1,4 +1,4 @@
-mport groovy.json.JsonOutput
+import groovy.json.JsonOutput
 
 pipeline {
     agent any
