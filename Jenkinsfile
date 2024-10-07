@@ -1,65 +1,48 @@
-import groovy.json.JsonOutput
+@Library('slack') _
 
 pipeline {
-    agent any
+  agent any
 
-    tools {
-        maven 'UI_Maven3..9.9'
+  environment {
+    deploymentName = "devsecops"
+    containerName = "devsecops-container"
+    serviceName = "devsecops-svc"
+    imageName = "siddharth67/numeric-app:${GIT_COMMIT}"
+    applicationURL = "http://devsecops-demo.eastus.cloudapp.azure.com"
+    applicationURI = "/increment/99"
+  }
+
+  stages {
+    stage('Testing Slack') {
+      steps {
+        sh 'exit 0'
+      }
     }
-    // tools {
-    //     mvnHome  'UI_Maven3..9.9'
+
+  }
+
+  post {
+    //    always {
+    //      junit 'target/surefire-reports/*.xml'
+    //      jacoco execPattern: 'target/jacoco.exec'
+    //      pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+    //      dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+    //      publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP HTML Report', reportTitles: 'OWASP ZAP HTML Report'])
+
+    // Use sendNotifications.groovy from shared library and provide current build result as parameter
+    //      sendNotification currentBuild.result
+    //    }
+
+    success {
+      script {
+        /* Use slackNotifier.groovy from shared library and provide current build result as parameter */
+        env.failedStage = "none"
+        env.emoji = ":white_check_mark: :tada: :thumbsup_all:"
+        sendNotification currentBuild.result
+      }
+    }
+
+    // failure {
+
     // }
-    environment {
-        jenkins_server_url = "http://18.118.206.5:8080"
-        notification_channel = 'mss-java-web-app'
-        slack_url = 'https://hooks.slack.com/services/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'
-
-    }
-
-   stages {
-
-    stage('Cloning Git') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/walmart-dev-mss']], extensions: [], userRemoteConfigs: [[credentialsId: 'democalculus-github-login-creds', url: 'https://github.com/democalculus/maven-web-application.git']]])
-            }
-        }
-
-    stage ('Build') {
-      steps {
-      sh 'mvn  clean install'
-       }
-    }
-
-    stage ('DEV Deploy') {
-      steps {
-      echo "deploying to DEV Env "
-      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-10-username-passord', path: '', url: 'http://18.118.206.5:8085')], contextPath: 'mss-walmart-dev', war: '**/*.war'
-      }
-    }
-
-    stage('QA approve') {
-        steps {
-          notifySlack("Do you approve QA deployment? $jenkins_server_url/job/$JOB_NAME", notification_channel, [])
-            input 'Do you approve QA deployment?'
-            }
-        }
-
-    stage ('QA Deploy') {
-      steps {
-      echo "deploying to QA Env "
-      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-10-username-passord', path: '', url: 'http://18.118.206.5:8085')], contextPath: 'mss-walmart-dev', war: '**/*.war'
-      }
-    }
-
-    }
-}
-
-def notifySlack(text, channel, attachments) {
-
-    def payload = JsonOutput.toJson([text: text,
-        channel: channel,
-        attachments: attach
-    ])
-
-    sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slack_url}"
-}
+  }
