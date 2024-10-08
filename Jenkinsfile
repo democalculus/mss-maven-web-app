@@ -3,6 +3,9 @@
 
 pipeline {
   agent any
+  tools {
+      maven 'UI_Maven3..9.9'
+  }
 
   environment {
     deploymentName = "devsecops"
@@ -14,10 +17,16 @@ pipeline {
   }
 
   stages {
-    stage('Testing Slack') {
+    stage('Cloning Git') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/walmart-dev-mss']], extensions: [], userRemoteConfigs: [[credentialsId: 'democalculus-github-login-creds', url: 'https://github.com/democalculus/maven-web-application.git']]])
+            }
+        }
+
+    stage ('Build') {
       steps {
-        sh 'exit 0'
-      }
+      sh 'mvn  clean install'
+       }
     }
 
   }
