@@ -8,12 +8,13 @@ pipeline {
   }
 
   environment {
-    deploymentName = "devsecops"
-    containerName = "devsecops-container"
-    serviceName = "devsecops-svc"
-    imageName = "siddharth67/numeric-app:${GIT_COMMIT}"
+    //deploymentName = "devsecops"
+    //containerName = "devsecops-container"
+    //serviceName = "devsecops-svc"
+  //  imageName = "siddharth67/numeric-app:${GIT_COMMIT}"
+  jenkins_server_url = "http://3.14.152.40:8080/"
     applicationURL = "http://devsecops-demo.eastus.cloudapp.azure.com"
-    applicationURI = "/increment/99"
+    mss_web_app = "/increment/99"
   }
 
   stages {
@@ -27,6 +28,27 @@ pipeline {
       steps {
       sh 'mvn  clean install'
        }
+    }
+
+    stage ('DEV Deploy') {
+      steps {
+      echo "deploying to DEV Env "
+      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-9-username-passord', path: '', url: 'http://3.14.152.40:8085/')], contextPath: 'mss-walmart-dev', war: '**/*.war'
+      }
+    }
+
+    stage('QA approve') {
+        steps {
+          notifySlack("Do you approve QA deployment? $jenkins_server_url/job/$JOB_NAME", notification_channel, [])
+            input 'Do you approve QA deployment?'
+            }
+        }
+
+    stage ('QA Deploy') {
+      steps {
+      echo "deploying to QA Env "
+      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-9-username-passord', path: '', url: 'http://3.14.152.40:8085/')], contextPath: 'mss-walmart-qa', war: '**/*.war'
+      }
     }
 
   }
