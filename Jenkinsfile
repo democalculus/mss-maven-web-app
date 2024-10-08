@@ -1,4 +1,4 @@
-@Library('slack') _
+@Library('jenkins-slack-library') _
 
 pipeline {
   agent any
