@@ -1,4 +1,5 @@
-@Library('jenkins-slack-library') _
+@Library('jenkins-slack-library@mss-walmart-dev') _
+//${library.jenkins-slack-library.version}
 
 pipeline {
   agent any
