@@ -39,6 +39,12 @@ pipeline {
       deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-9-username-passord', path: '', url: 'http://18.217.126.46:8085/')], contextPath: 'mss-walmart-dev-app', war: '**/*.war'
       }
     }
+
+    stage('QA approve') {
+            steps {
+                input('Do you want to proceed?')
+            }
+        }
     //
     // stage('QA approve') {
     //     steps {
