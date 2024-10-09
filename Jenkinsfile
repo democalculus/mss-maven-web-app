@@ -12,7 +12,7 @@ pipeline {
     //containerName = "devsecops-container"
     //serviceName = "devsecops-svc"
   //  imageName = "siddharth67/numeric-app:${GIT_COMMIT}"
-  jenkins_server_url = "http://3.14.152.40:8080/"
+  jenkins_server_url = "http://18.217.126.46:8080/"
     applicationURL = "http://devsecops-demo.eastus.cloudapp.azure.com"
     mss_web_app = "/increment/99"
   }
@@ -33,21 +33,21 @@ pipeline {
     stage ('DEV Deploy') {
       steps {
       echo "deploying to DEV Env "
-      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-9-username-passord', path: '', url: 'http://3.14.152.40:8085/')], contextPath: 'mss-walmart-dev', war: '**/*.war'
+      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-9-username-passord', path: '', url: 'http://18.217.126.46:8085/')], contextPath: 'mss-walmart-dev-app', war: '**/*.war'
       }
     }
-
-    stage('QA approve') {
-        steps {
-          notifySlack("Do you approve QA deployment? $jenkins_server_url/job/$JOB_NAME", notification_channel, [])
-            input 'Do you approve QA deployment?'
-            }
-        }
+    //
+    // stage('QA approve') {
+    //     steps {
+    //       notifySlack("Do you approve QA deployment? $jenkins_server_url/job/$JOB_NAME", notification_channel, [])
+    //         input 'Do you approve QA deployment?'
+    //         }
+    //     }
 
     stage ('QA Deploy') {
       steps {
       echo "deploying to QA Env "
-      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-9-username-passord', path: '', url: 'http://3.14.152.40:8085/')], contextPath: 'mss-walmart-qa', war: '**/*.war'
+      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-9-username-passord', path: '', url: 'http://18.217.126.46:8085/')], contextPath: 'mss-walmart-qa-app', war: '**/*.war'
       }
     }
 
