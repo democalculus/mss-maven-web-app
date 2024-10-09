@@ -12,13 +12,11 @@ pipeline {
     serviceName = "devsecops-svc"
     imageName = "siddharth67/numeric-app:${GIT_COMMIT}"
     applicationURL = "http://18.217.126.46:8085/mss-walmart-dev"
-    applicationURI = "/increment/99"
     deploymentName = "http://18.217.126.46:8085/mss-walmart-dev-app/"
     //containerName = "devsecops-container"
     //serviceName = "devsecops-svc"
   //  imageName = "siddharth67/numeric-app:${GIT_COMMIT}"
      jenkins_server_url = "http://18.217.126.46:8080/"
-    applicationURL = "http://devsecops-demo.eastus.cloudapp.azure.com"
     mss_web_app = "/increment/99"
   }
 
