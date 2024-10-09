@@ -129,3 +129,4 @@ attachments = [
    ]
  ]
 slackSend(iconEmoji: emoji, attachments: attachments)
+}
