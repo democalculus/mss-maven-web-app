@@ -9,8 +9,8 @@
 </head>
 </head>
 <body>
-<h1 align="center">I have Made the changes From My Laptop In Houston,Texas. See Me As  A DevlerPer/h1>
-<h1 align="center"> I am the one developing the Codes, Dan Is A DevOp Engineer.</h1>
+<h1 align="center">I have Made the changes From My Laptop In Houston,Texas. See Me As  A Developer/h1>
+<h1 align="center"> Dan Is Learning To Become A DevOps Guy In 2024</h1>
 <hr>
 <div style="text-align: center;">
 	<span>
