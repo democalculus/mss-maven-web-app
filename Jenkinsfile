@@ -8,7 +8,7 @@ pipeline {
   }
 
   environment {
-    //deploymentName = "devsecops"
+    deploymentName = "http://18.217.126.46:8085/mss-walmart-dev"
     //containerName = "devsecops-container"
     //serviceName = "devsecops-svc"
   //  imageName = "siddharth67/numeric-app:${GIT_COMMIT}"
