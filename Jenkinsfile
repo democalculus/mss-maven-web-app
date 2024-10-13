@@ -8,15 +8,15 @@ pipeline {
   }
 
   environment {
-    containerName = "http://18.217.126.46:8085/mss-walmart-qa-app/"
+    containerName = "http://3.143.147.204:8085/mss-walmart-qa-app/"
     serviceName = "devsecops-svc"
     imageName = "siddharth67/numeric-app:${GIT_COMMIT}"
-    applicationURL = "http://18.217.126.46:8085/mss-walmart-dev"
-    deploymentName = "http://18.217.126.46:8085/mss-walmart-dev-app/"
+    applicationURL = "http://3.143.147.204:8085/mss-walmart-dev"
+    deploymentName = "http://3.143.147.204:8085/mss-walmart-dev-app/"
     //containerName = "devsecops-container"
     //serviceName = "devsecops-svc"
   //  imageName = "siddharth67/numeric-app:${GIT_COMMIT}"
-     jenkins_server_url = "http://18.217.126.46:8080/"
+     jenkins_server_url = "http://3.143.147.204:8080/"
     mss_web_app = "/increment/99"
   }
 
@@ -36,7 +36,7 @@ pipeline {
     stage ('DEV Deploy') {
       steps {
       echo "deploying to DEV Env "
-      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-9-username-passord', path: '', url: 'http://18.217.126.46:8085/')], contextPath: 'mss-walmart-dev-app', war: '**/*.war'
+      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-9-username-passord', path: '', url: 'http://3.143.147.204:8085/')], contextPath: 'mss-walmart-dev-app', war: '**/*.war'
       }
     }
 
@@ -56,36 +56,45 @@ pipeline {
     stage ('QA Deploy') {
       steps {
       echo "deploying to QA Env "
-      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-9-username-passord', path: '', url: 'http://18.217.126.46:8085/')], contextPath: 'mss-walmart-qa-app', war: '**/*.war'
+      deploy adapters: [tomcat9(credentialsId: 'apache-tomcat-9-username-passord', path: '', url: 'http://3.143.147.204:8085/')], contextPath: 'mss-walmart-qa-app', war: '**/*.war'
+      }
+    }
+
+    stage ('Deploy kops cluster') {
+      steps {
+      echo "deploying kops cluster "
+      sshagent(['kops-cluster-private-key-login']) {
+           sh "kubectl apply -f maven-web-app.yml -n jenkins-ns "
+          }
       }
     }
 
   }
 
-  // post {
-  //   //    always {
-  //   //      junit 'target/surefire-reports/*.xml'
-  //   //      jacoco execPattern: 'target/jacoco.exec'
-  //   //      pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
-  //   //      dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-  //   //      publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP HTML Report', reportTitles: 'OWASP ZAP HTML Report'])
-  //
-  //   // Use sendNotifications.groovy from shared library and provide current build result as parameter
-  //   //      sendNotification currentBuild.result
-  //   //    }
-  //
-  //   success {
-  //     script {
-  //       /* Use slackNotifier.groovy from shared library and provide current build result as parameter */
-  //       env.failedStage = "none"
-  //       env.emoji = ":white_check_mark: :tada: :thumbsup_all:"
-  //       sendNotification currentBuild.result
-  //     }
-  //   }
-  //
-  //   // failure {
-  //
-  //   // }
-  // }
+  post {
+       always {
+    //      junit 'target/surefire-reports/*.xml'
+    //      jacoco execPattern: 'target/jacoco.exec'
+    //      pitmutation mutationStatsFile: '**/target/pit-reports/**/mutations.xml'
+    //      dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+    //      publishHTML([allowMissing: false, alwaysLinkToLastBuild: true, keepAll: true, reportDir: 'owasp-zap-report', reportFiles: 'zap_report.html', reportName: 'OWASP ZAP HTML Report', reportTitles: 'OWASP ZAP HTML Report'])
+
+    // Use sendNotifications.groovy from shared library and provide current build result as parameter
+         sendNotification currentBuild.result
+       }
+     //this is my note for success alert and this line will be deleted
+    // success {
+    //   script {
+    //     /* Use slackNotifier.groovy from shared library and provide current build result as parameter */
+    //     env.failedStage = "none"
+    //     env.emoji = ":white_check_mark: :tada: :thumbsup_all:"
+    //     sendNotification currentBuild.result
+    //   }
+    // }
+
+    // failure {
+
+    // }
+  }
 
   }
