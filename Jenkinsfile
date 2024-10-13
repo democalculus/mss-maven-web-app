@@ -62,7 +62,7 @@ pipeline {
 
     stage ('Deploy kops cluster') {
       steps {
-      echo "deploying kops cluster "
+          sh "ls -lart"
       sshagent(['kops-cluster-private-key-login']) {
            sh "kubectl apply -f maven-web-app.yml -n jenkins-ns "
           }
